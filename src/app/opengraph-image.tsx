@@ -27,7 +27,8 @@ export default function OpenGraphImage() {
       >
         <div
           style={{
-            display: "inline-flex",
+            display: "flex",
+            alignSelf: "flex-start",
             alignItems: "center",
             border: "1px solid rgba(255,255,255,0.18)",
             borderRadius: "999px",
@@ -39,7 +40,13 @@ export default function OpenGraphImage() {
           Portfolio
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 16,
+          }}
+        >
           <div
             style={{
               fontSize: 68,
