@@ -1,9 +1,18 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { Certificate } from "@/data/certificates";
-import PdfPreview from "@/components/PdfPreview";
 import { useLocale } from "@/contexts/LocaleContext";
+
+const PdfPreview = dynamic(() => import("@/components/PdfPreview"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex min-h-[360px] items-center justify-center text-sm text-neutral-500 dark:text-neutral-400">
+      Loading preview...
+    </div>
+  ),
+});
 
 export default function CertificateDetailContent({
   certificate,

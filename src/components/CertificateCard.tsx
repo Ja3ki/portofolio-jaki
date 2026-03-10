@@ -1,13 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { FileText } from "lucide-react";
-import PdfPreview from "@/components/PdfPreview";
 import type { Certificate } from "@/data/certificates";
 import { trackEvent } from "@/lib/analytics";
 import TrackedExternalLink from "@/components/TrackedExternalLink";
 import TrackedLink from "@/components/TrackedLink";
 import { useLocale } from "@/contexts/LocaleContext";
+
+const PdfPreview = dynamic(() => import("@/components/PdfPreview"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-full items-center justify-center text-sm text-neutral-500 dark:text-neutral-400">
+      Loading preview...
+    </div>
+  ),
+});
 
 export default function CertificateCard({ c }: { c: Certificate }) {
   const { locale } = useLocale();
@@ -87,11 +96,16 @@ export default function CertificateCard({ c }: { c: Certificate }) {
             <div className="aspect-[16/9] w-full">
               <div className="flex h-full flex-col items-center justify-center px-4 text-center">
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950">
-                  <FileText size={24} className="text-neutral-600 dark:text-neutral-300" />
+                  <FileText
+                    size={24}
+                    className="text-neutral-600 dark:text-neutral-300"
+                  />
                 </div>
 
                 <p className="mt-4 text-sm font-medium text-neutral-800 dark:text-neutral-200">
-                  {locale === "id" ? "Preview sertifikat tersedia" : "Certificate preview available"}
+                  {locale === "id"
+                    ? "Preview sertifikat tersedia"
+                    : "Certificate preview available"}
                 </p>
                 <p className="mt-2 text-xs leading-relaxed text-neutral-500 dark:text-neutral-400">
                   {locale === "id"
@@ -116,7 +130,9 @@ export default function CertificateCard({ c }: { c: Certificate }) {
               <button
                 type="button"
                 onClick={() => {
-                  trackEvent("certificate_preview_open", { label: content.title });
+                  trackEvent("certificate_preview_open", {
+                    label: content.title,
+                  });
                   setIsOpen(true);
                 }}
                 className="inline-flex items-center justify-center rounded-xl border border-neutral-200 bg-white px-4 py-2 text-sm shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-950"
@@ -179,7 +195,11 @@ export default function CertificateCard({ c }: { c: Certificate }) {
 
             <div className="max-h-[calc(90vh-88px)] overflow-auto bg-neutral-100 p-4 dark:bg-neutral-900">
               <div className="mx-auto flex min-h-[320px] w-full items-center justify-center rounded-2xl bg-white p-4 dark:bg-neutral-950">
-                <PdfPreview url={c.pdfUrl!} title={content.title} widthMode="modal" />
+                <PdfPreview
+                  url={c.pdfUrl!}
+                  title={content.title}
+                  widthMode="modal"
+                />
               </div>
 
               <div className="mt-4 flex flex-wrap justify-center gap-2">
@@ -211,7 +231,9 @@ export default function CertificateCard({ c }: { c: Certificate }) {
                     eventLabel={content.title}
                     className="inline-flex items-center justify-center rounded-xl border border-neutral-200 bg-white px-4 py-2 text-sm shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-950"
                   >
-                    {locale === "id" ? "Verifikasi Sertifikat" : "Verify Certificate"}
+                    {locale === "id"
+                      ? "Verifikasi Sertifikat"
+                      : "Verify Certificate"}
                   </TrackedExternalLink>
                 ) : null}
               </div>
